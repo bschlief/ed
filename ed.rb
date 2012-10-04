@@ -6,15 +6,22 @@
 # Problem: How do you extend this to an arbitrary
 # number of dice?
 
-counts = {}
+def dice_counts(sides, dice)
+  dots = (1..sides).to_a
+  
+  sums = dots.repeated_permutation(dice).collect {|arr| arr.inject(:+)}
 
-(1..6).each do |i| 
-  (1..6).each do |j|
-    (1..6).each do |k|
-      counts[i+j+k] ||= 0;
-      counts[i+j+k] += 1;
-    end
+  counts_hash = {}
+  sums.each do |s|
+    counts_hash[s] ||= 0
+    counts_hash[s] += 1
   end
+
+  counts_hash
 end
 
-counts.keys.each { |k| puts "Sum#{k} occurs #{counts[k]} times" }
+
+sides = ARGV[0].to_i
+dice = ARGV[1].to_i
+puts "Sides: #{sides}\tDice: #{dice}"
+puts dice_counts(sides,dice)
